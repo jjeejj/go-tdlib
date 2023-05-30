@@ -1,5 +1,5 @@
-> fork from github.com/jjeejj/go-tdlib
->
+> base from github.com/aliforever/go-tdlib
+
 # go-tdlib
 
 Golang Telegram Database library Wrapper
