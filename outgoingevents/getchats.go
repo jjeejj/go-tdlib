@@ -1,6 +1,6 @@
 package outgoingevents
 
-import "github.com/aliforever/go-tdlib/entities"
+import "github.com/jjeejj/go-tdlib/entities"
 
 type GetChats struct {
 	ChatList *entities.ChatList `json:"chat_list"`

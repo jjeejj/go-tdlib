@@ -1,6 +1,6 @@
 package outgoingevents
 
-import "github.com/aliforever/go-tdlib/entities"
+import "github.com/jjeejj/go-tdlib/entities"
 
 type GetRemoteFile struct {
 	RemoteFileID string             `json:"remote_file_id"`

@@ -2,9 +2,10 @@ package tdlib
 
 import (
 	"encoding/json"
-	"github.com/aliforever/go-tdlib/entities"
-	"github.com/aliforever/go-tdlib/incomingevents"
-	"github.com/aliforever/go-tdlib/outgoingevents"
+
+	"github.com/jjeejj/go-tdlib/entities"
+	"github.com/jjeejj/go-tdlib/incomingevents"
+	"github.com/jjeejj/go-tdlib/outgoingevents"
 )
 
 func (t *TDLib) CustomRequest(requestType string, parameters map[string]interface{}) (result *json.RawMessage, err error) {

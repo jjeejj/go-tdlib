@@ -2,6 +2,8 @@ package tdlib
 
 // #cgo linux CFLAGS: -I/usr/local/include
 // #cgo linux LDFLAGS: -Wl,-rpath=/usr/local/lib -ltdjson
+// #cgo darwin CFLAGS: -I/usr/local/include
+// #cgo darwin LDFLAGS: -Wl,-rpath=/usr/local/lib -ltdjson
 // #include <stdlib.h>
 // #include <td/telegram/td_json_client.h>
 // #include <td/telegram/td_log.h>
@@ -11,15 +13,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/aliforever/go-tdlib/config"
-	"github.com/aliforever/go-tdlib/incomingevents"
-	"github.com/aliforever/go-tdlib/outgoingevents"
-	"github.com/google/uuid"
-	"github.com/sirupsen/logrus"
 	"math/rand"
 	"sync"
 	"time"
 	"unsafe"
+
+	"github.com/google/uuid"
+	"github.com/jjeejj/go-tdlib/config"
+	"github.com/jjeejj/go-tdlib/incomingevents"
+	"github.com/jjeejj/go-tdlib/outgoingevents"
+	"github.com/sirupsen/logrus"
 )
 
 type TDLib struct {

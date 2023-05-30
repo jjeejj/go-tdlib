@@ -1,19 +1,25 @@
+> fork from github.com/jjeejj/go-tdlib
+>
 # go-tdlib
+
 Golang Telegram Database library Wrapper
 
-### Requirement:
+### Requirement
+
 - Build TDLib for Golang and your operating system. See a [TDLib build instructions generator](https://tdlib.github.io/td/build.html) for detailed instructions on how to build TDLib
 
-### Install:
-`go get -u github.com/aliforever/go-tdlib`
+### Install
 
-### Usage:
+`go get -u github.com/jjeejj/go-tdlib`
+
+### Usage
+
 ```go
 package main
 
 import (
-  "github.com/aliforever/go-tdlib"
-  "github.com/aliforever/go-tdlib/config"
+  "github.com/jjeejj/go-tdlib"
+  "github.com/jjeejj/go-tdlib/config"
   "fmt"
 )
 
@@ -24,7 +30,7 @@ func main() {
     SetDatabaseDirectory("./tdlib/tdlib-db")
 
   h := tdlib.NewHandlers().SetRawIncomingEventHandler(func(eventBytes []byte) {
-	  fmt.Println(string(eventBytes))
+   fmt.Println(string(eventBytes))
   })
 
   apiID := 123456
@@ -34,12 +40,13 @@ func main() {
 
   err := c.tdlibClient.ReceiveUpdates()
   if err != nil {
-	  panic(err)
+   panic(err)
   }
 }
 ```
 
-### Notes:
+### Notes
+
 - Build project by specifying installation path for the built TDLib as following:
 
     `go build -ldflags="-r /usr/local/lib"`

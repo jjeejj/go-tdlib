@@ -1,9 +1,10 @@
 package tdlib
 
 import (
-	"github.com/aliforever/go-tdlib/entities"
-	"github.com/aliforever/go-tdlib/incomingevents"
 	"sync"
+
+	"github.com/jjeejj/go-tdlib/entities"
+	"github.com/jjeejj/go-tdlib/incomingevents"
 )
 
 type Handlers struct {

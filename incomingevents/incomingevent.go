@@ -2,7 +2,8 @@ package incomingevents
 
 import (
 	"encoding/json"
-	"github.com/aliforever/go-tdlib/entities"
+
+	"github.com/jjeejj/go-tdlib/entities"
 )
 
 type Generic struct {

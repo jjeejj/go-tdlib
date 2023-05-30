@@ -1,6 +1,6 @@
 package incomingevents
 
-import "github.com/aliforever/go-tdlib/entities"
+import "github.com/jjeejj/go-tdlib/entities"
 
 type GetChatHistoryResponse struct {
 	Event
