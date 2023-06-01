@@ -25,11 +25,13 @@ func NewEventHandler[T any](handler func(data *T)) Event[T] {
 	return Event[T]{handler: handler}
 }
 
+// SetRawIncomingEventHandler 事件的原始数据，没有经过格式化的.
 func (h *Handlers) SetRawIncomingEventHandler(fn func(eventBytes []byte)) *Handlers {
 	h.rawIncomingEvent = fn
 	return h
 }
 
+// SetIncomingEventHandler 根据格式化后的事件类型处理对应的事件.
 func (h *Handlers) SetIncomingEventHandler(fn func(event incomingevents.Event)) *Handlers {
 	h.incomingEvent = fn
 	return h

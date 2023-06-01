@@ -25,15 +25,16 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// TDLib 设备登录使用的客户端，一个连接代表一个客户端.
 type TDLib struct {
-	apiID   int64
-	apiHash string
+	apiID   int64  // 生成应用 id
+	apiHash string // 生成应用 的hash
 
 	client unsafe.Pointer
 
 	cfg config.Config
 
-	handlers *Handlers
+	handlers *Handlers // 事件处理句柄
 
 	responseQueueLocker sync.Mutex
 	responseQueue       map[string]chan []byte
@@ -95,6 +96,7 @@ func NewClient(apiID int64, apiHash string, handlers *Handlers, cfg *config.Conf
 	}
 }
 
+// ReceiveUpdates 接收事件处理.
 func (t *TDLib) ReceiveUpdates() error {
 	return t.receiveUpdates()
 }
