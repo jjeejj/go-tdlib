@@ -52,3 +52,14 @@ func GenericFromBytes(b []byte) (Generic, error) {
 
 	return event, err
 }
+
+func ErrorFromBytes(b []byte) (ErrorEvent, error) {
+	var event ErrorEvent
+
+	err := json.Unmarshal(b, &event)
+	if err != nil {
+		return ErrorEvent{}, err
+	}
+
+	return event, err
+}

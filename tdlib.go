@@ -132,6 +132,17 @@ func (t *TDLib) receiveUpdates() error {
 			return err
 		}
 
+		if ie.Type == "error" && ie.RequestID == "" {
+			if t.handlers != nil && t.handlers.onError != nil {
+				errEvent, err := incomingevents.ErrorFromBytes(updateBytes)
+				if err != nil {
+					return err
+				}
+				go t.handlers.onError(errEvent)
+			}
+			continue
+		}
+
 		if ie.RequestID != "" {
 			go t.informResponse(ie.RequestID, updateBytes)
 			continue
@@ -216,7 +227,13 @@ func (t *TDLib) informResponse(requestID string, data []byte) {
 	}
 }
 
-func sendMap[ResponseType any](t *TDLib, requestType string, data map[string]interface{}) (*ResponseType, error) {
+func sendMap[ResponseType any](
+	t *TDLib,
+	requestType string,
+	data map[string]interface{},
+	sendOptions ...*SendOptions,
+) (*ResponseType, error) {
+
 	requestID := uuid.NewString()
 
 	eventJS, err := outgoingevents.NewEventJSONFromMap(requestID, requestType, data)
@@ -224,11 +241,15 @@ func sendMap[ResponseType any](t *TDLib, requestType string, data map[string]int
 		return nil, err
 	}
 
-	return _send[ResponseType](t, requestID, eventJS)
+	return _send[ResponseType](t, requestID, eventJS, sendOptions...)
 }
 
-// TODO: Add timeout
-func send[ResponseType any](t *TDLib, data outgoingevents.EventInterface) (*ResponseType, error) {
+func send[ResponseType any](
+	t *TDLib,
+	data outgoingevents.EventInterface,
+	sendOptions ...*SendOptions,
+) (*ResponseType, error) {
+
 	requestID := uuid.NewString()
 
 	eventJS, err := outgoingevents.NewEventJSON(requestID, data)
@@ -236,10 +257,15 @@ func send[ResponseType any](t *TDLib, data outgoingevents.EventInterface) (*Resp
 		return nil, err
 	}
 
-	return _send[ResponseType](t, requestID, eventJS)
+	return _send[ResponseType](t, requestID, eventJS, sendOptions...)
 }
 
-func _send[ResponseType any](t *TDLib, requestID string, str string) (*ResponseType, error) {
+func _send[ResponseType any](
+	t *TDLib,
+	requestID string,
+	str string,
+	sendOptions ...*SendOptions,
+) (*ResponseType, error) {
 	ch := t.newResponseChannel(requestID)
 
 	if t.logger != nil {
@@ -251,15 +277,19 @@ func _send[ResponseType any](t *TDLib, requestID string, str string) (*ResponseT
 		return nil, err
 	}
 
-	ticker := time.NewTicker(time.Second * 5)
-
 	var resp []byte
 
-	select {
-	case <-ticker.C:
-		return nil, errors.New("request_timed_out")
-	case resp = <-ch:
-		break
+	if len(sendOptions) == 0 || sendOptions[0].timeout == nil {
+		resp = <-ch
+	} else {
+		ticker := time.NewTicker(*sendOptions[0].timeout)
+
+		select {
+		case <-ticker.C:
+			return nil, errors.New("request_timed_out")
+		case resp = <-ch:
+			break
+		}
 	}
 
 	t.removeResponseChannel(requestID, ch)

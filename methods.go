@@ -8,8 +8,13 @@ import (
 	"github.com/jjeejj/go-tdlib/outgoingevents"
 )
 
-func (t *TDLib) CustomRequest(requestType string, parameters map[string]interface{}) (result *json.RawMessage, err error) {
-	resp, err := sendMap[json.RawMessage](t, requestType, parameters)
+func (t *TDLib) CustomRequest(
+	requestType string,
+	parameters map[string]interface{},
+	options ...*SendOptions,
+) (result *json.RawMessage, err error) {
+
+	resp, err := sendMap[json.RawMessage](t, requestType, parameters, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -117,14 +122,21 @@ func (t *TDLib) LoadChats(inboxType *entities.ChatList, limit int32) error {
 	return err
 }
 
-func (t *TDLib) DownloadFile(fileID, priority, offset, limit int64, synchronous bool) (*incomingevents.DownloadFileResponse, error) {
+func (t *TDLib) DownloadFile(
+	fileID,
+	priority,
+	offset,
+	limit int64,
+	synchronous bool,
+	options ...*SendOptions,
+) (*incomingevents.DownloadFileResponse, error) {
 	return send[incomingevents.DownloadFileResponse](t, outgoingevents.DownloadFile{
 		FileID:      fileID,
 		Priority:    priority,
 		Offset:      offset,
 		Limit:       limit,
 		Synchronous: synchronous,
-	})
+	}, options...)
 }
 
 func (t *TDLib) ReadFilePart(fileID, offset, count int64) (*incomingevents.ReadFilePart, error) {
@@ -156,5 +168,21 @@ func (t *TDLib) GetChatHistory(chatID, fromMessageID, offset int64, limit uint64
 		Offset:        offset,
 		Limit:         limit,
 		OnlyLocal:     onlyLocal,
+	})
+}
+
+func (t *TDLib) SendMessage(
+	chatID int64,
+	replyToMessageID int64,
+	replyMarkup entities.ReplyMarkup,
+	inputMessageContent entities.InputMessageContent,
+	options *outgoingevents.SendMessageOptions,
+) (*incomingevents.SendMessage, error) {
+	return send[incomingevents.SendMessage](t, outgoingevents.SendMessage{
+		ChatID:              chatID,
+		ReplyToMessageID:    replyToMessageID,
+		Options:             options,
+		ReplyMarkup:         replyMarkup,
+		InputMessageContent: inputMessageContent,
 	})
 }
