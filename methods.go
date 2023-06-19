@@ -186,3 +186,33 @@ func (t *TDLib) SendMessage(
 		InputMessageContent: inputMessageContent,
 	})
 }
+
+// SetProxy 设置代理并 默认启动
+func (t *TDLib) SetProxy(
+	id int32,
+	server string,
+	port int32,
+	proxy entities.Proxy,
+) (interface{}, error) {
+	reqParams := outgoingevents.SetProxy{
+		Id:        id,
+		Server:    server,
+		Port:      port,
+		IsEnabled: true,
+	}
+	// 判断代理的类型
+	switch proxy.Type {
+	case entities.HttpProxyType:
+		reqParams.Proxy = &entities.HttpProxy{
+			Username: proxy.Username,
+			Password: proxy.Password,
+			HttpOnly: false,
+		}
+	case entities.Socks5ProxyType:
+		reqParams.Proxy = &entities.Socks5Proxy{
+			Username: proxy.Username,
+			Password: proxy.Password,
+		}
+	}
+	return send[interface{}](t, reqParams)
+}
