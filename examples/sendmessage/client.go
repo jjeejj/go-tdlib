@@ -3,16 +3,17 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/aliforever/go-tdlib"
-	"github.com/aliforever/go-tdlib/config"
-	"github.com/aliforever/go-tdlib/entities"
-	"github.com/aliforever/go-tdlib/incomingevents"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/jjeejj/go-tdlib"
+	"github.com/jjeejj/go-tdlib/config"
+	"github.com/jjeejj/go-tdlib/entities"
+	"github.com/jjeejj/go-tdlib/incomingevents"
 )
 
 type Client struct {

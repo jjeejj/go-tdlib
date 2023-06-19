@@ -3,7 +3,8 @@ package outgoingevents
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/aliforever/go-tdlib/entities"
+
+	"github.com/jjeejj/go-tdlib/entities"
 )
 
 type SendMessageOptions struct {
