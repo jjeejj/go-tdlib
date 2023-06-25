@@ -316,6 +316,5 @@ func _send[ResponseType any](
 	if err != nil {
 		return nil, err
 	}
-
 	return respObj, nil
 }

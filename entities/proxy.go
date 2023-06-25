@@ -1,10 +1,13 @@
 package entities
 
-type ProxyType string
+// ProxyTypeEnum Alias for abstract ProxyType 'Sub-Classes', used as constant-enum here
+type ProxyTypeEnum string
 
+// ProxyType enums
 const (
-	HttpProxyType   ProxyType = "http_proxy_type"
-	Socks5ProxyType ProxyType = "socks5_proxy_type"
+	ProxyTypeSocks5Type  ProxyTypeEnum = "proxyTypeSocks5"
+	ProxyTypeHttpType    ProxyTypeEnum = "proxyTypeHttp"
+	ProxyTypeMtprotoType ProxyTypeEnum = "proxyTypeMtproto"
 )
 
 type HttpProxy struct {
@@ -16,10 +19,4 @@ type HttpProxy struct {
 type Socks5Proxy struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
-}
-
-type Proxy struct {
-	Username string    `json:"username"`
-	Password string    `json:"password"`
-	Type     ProxyType `json:"type"`
 }
